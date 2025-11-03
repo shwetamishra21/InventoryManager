@@ -37,10 +37,29 @@ class InventoryViewModel(private val repository: InventoryRepository) : ViewMode
         }
     }
 
+    fun updateItem(item: InventoryItem) {
+        viewModelScope.launch {
+            repository.updateItem(item)
+            loadItems()
+        }
+    }
+
     fun deleteItem(id: Int) {
         viewModelScope.launch {
             repository.deleteItem(id)
             loadItems()
+        }
+    }
+
+    fun incrementItem(item: InventoryItem) {
+        val updated = item.copy(quantity = item.quantity + 1)
+        updateItem(updated)
+    }
+
+    fun decrementItem(item: InventoryItem) {
+        if (item.quantity > 0) {
+            val updated = item.copy(quantity = item.quantity - 1)
+            updateItem(updated)
         }
     }
 }

@@ -13,7 +13,7 @@ import com.example.inventorymanager.data.InventoryDatabaseHelper
 import com.example.inventorymanager.data.InventoryRepository
 import com.example.inventorymanager.ui.InventoryViewModel
 import com.example.inventorymanager.ui.InventoryViewModelFactory
-import com.example.inventorymanager.ui.screens.AddItemScreen
+import com.example.inventorymanager.ui.screens.AddOrUpdateItemScreen
 import com.example.inventorymanager.ui.screens.ItemListScreen
 import com.example.inventorymanager.ui.screens.LandingScreen
 import com.example.inventorymanager.ui.theme.InventoryManagerTheme
@@ -53,12 +53,21 @@ class MainActivity : ComponentActivity() {
                         ItemListScreen(
                             items = items,
                             onAddClick = { navController.navigate(Screen.AddItem.route) },
-                            onDeleteClick = { item -> viewModel.deleteItem(item.id) }
+                            onDeleteClick = { item -> viewModel.deleteItem(item.id) },
+                            onIncrement = { item -> viewModel.incrementItem(item) },
+                            onDecrement = { item -> viewModel.decrementItem(item) },
+                            onEditClick = { item ->
+                                // Navigate to AddItem screen for editing (pass item if needed)
+                                // For simple integration, navigate and pass id or navigate with custom logic
+                                // Here we just navigate to add item screen, you can enhance to pass item data
+                                navController.navigate(Screen.AddItem.route)
+                            }
                         )
                     }
                     composable(Screen.AddItem.route) {
-                        AddItemScreen(
+                        AddOrUpdateItemScreen(
                             onSave = { name, qty, price, threshold ->
+                                // Ideally, check if editing an existing item; for now, always add new
                                 viewModel.addItem(name, qty, price, threshold)
                                 navController.popBackStack()
                             },

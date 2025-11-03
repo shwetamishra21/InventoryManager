@@ -1,34 +1,44 @@
 package com.example.inventorymanager.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.inventorymanager.data.InventoryItem
+import com.example.inventorymanager.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemListScreen(
     items: List<InventoryItem>,
     onAddClick: () -> Unit,
-    onDeleteClick: (InventoryItem) -> Unit
+    onDeleteClick: (InventoryItem) -> Unit,
+    onEditClick: (InventoryItem) -> Unit,
+    onIncrement: (InventoryItem) -> Unit,
+    onDecrement: (InventoryItem) -> Unit
 ) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = GreenSecondary
             ) {
-                Text("+", color = MaterialTheme.colorScheme.onPrimary)
+                Icon(Icons.Filled.Add, contentDescription = "Add Item", tint = GreenOnPrimary)
             }
-        }
+        },
+        containerColor = BackgroundDark
     ) { padding ->
         Column(
             modifier = Modifier
@@ -40,48 +50,60 @@ fun ItemListScreen(
                 text = "Inventory",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = AccentYellow
             )
             Spacer(modifier = Modifier.height(16.dp))
             if (items.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No items yet.", color = MaterialTheme.colorScheme.onBackground)
+                    Text("No items yet.", color = OnBackgroundDark)
                 }
             } else {
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(items) { item ->
                         val isLow = item.quantity <= item.lowStockThreshold
                         Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.medium,
                             colors = CardDefaults.cardColors(
-                                containerColor = if (isLow)
-                                    MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)
-                                else
-                                    MaterialTheme.colorScheme.surfaceVariant
+                                containerColor = if (isLow) ErrorRed.copy(alpha = 0.07f) else CardDark
                             )
                         ) {
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
+                                modifier = Modifier.padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Column {
-                                    Text(item.name, fontWeight = FontWeight.Bold)
-                                    Text("Qty: ${item.quantity}   |   ₹${item.price}")
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(item.name, fontWeight = FontWeight.Bold, color = GreenOnPrimary)
+                                    Text("Qty: ${item.quantity}  |  ₹${item.price}", color = OnBackgroundDark)
                                     if (isLow) {
-                                        Text(
-                                            "Low stock!",
-                                            color = MaterialTheme.colorScheme.secondary,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            fontWeight = FontWeight.Bold
-                                        )
+                                        Text("Low stock!", color = ErrorRed, fontWeight = FontWeight.Bold)
                                     }
                                 }
-                                IconButton(onClick = { onDeleteClick(item) }) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(onClick = { onDecrement(item) }) {
+                                        Text(
+                                            text = "-",
+                                            fontSize = 24.sp,
+                                            color = GreenSecondary,
+                                            modifier = Modifier.padding(horizontal = 4.dp)
+                                        )
+                                    }
+                                    Text(
+                                        "${item.quantity}",
+                                        fontWeight = FontWeight.Bold,
+                                        color = AccentYellow,
+                                        modifier = Modifier.padding(horizontal = 8.dp)
+                                    )
+                                    IconButton(onClick = { onIncrement(item) }) {
+                                        Icon(Icons.Filled.Add, contentDescription = "Increment", tint = GreenSecondary)
+                                    }
+                                    IconButton(onClick = { onEditClick(item) }) {
+                                        Icon(Icons.Filled.Edit, contentDescription = "Edit", tint = GreenSecondary)
+                                    }
+                                    IconButton(onClick = { onDeleteClick(item) }) {
+                                        Icon(Icons.Filled.Delete, contentDescription = "Delete", tint = ErrorRed)
+                                    }
                                 }
                             }
                         }
