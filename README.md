@@ -257,6 +257,8 @@ cd InventoryManager
 
 ### MVVM Pattern
 
+
+
 This application follows the **Model-View-ViewModel (MVVM)** architecture pattern:
 
 ```
