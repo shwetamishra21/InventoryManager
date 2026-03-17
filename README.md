@@ -30,7 +30,6 @@
 - 💾 **Local Storage** - Reliable offline functionality
 
 ---
-
 ## 🎯 Features
 
 ### Core Functionality
