@@ -9,7 +9,6 @@
 
 **A modern Android inventory management application built with Kotlin**
 
-
 [Features](#features) • [Installation](#installation) • [Usage](#usage) • [Contributing](#contributing) • [License](#license)
 
 </div>
