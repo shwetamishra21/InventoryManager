@@ -14,7 +14,6 @@
 </div>
 
 ---
-
 ## 📋 Overview
 
 **InventoryManager** is a native Android application designed to streamline inventory management processes. Built entirely with Kotlin and following modern Android development best practices, this application provides an intuitive interface for tracking, managing, and organizing inventory items efficiently.
