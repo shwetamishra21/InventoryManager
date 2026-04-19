@@ -24,7 +24,7 @@
 - 🏗️ **Modern Architecture** - Clean architecture principles with MVVM pattern
 - 🎨 **User-Friendly Interface** - Intuitive Material Design
 - ⚡ **Efficient Data Management** - Optimized for performance
-- 📱 **Responsive Design** - Works seamlessly across different screen sizes
+- 📱 **Responsive Design** - Works seamlessly across different screen size
 - 💾 **Local Storage** - Reliable offline functionality
 
 ---
